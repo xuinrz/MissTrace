@@ -1,0 +1,15 @@
+server:
+  port: 8008
+spring:
+  datasource:
+    name: sdumisstrace
+    url: jdbc:mysql://localhost:3306/sdumisstrace
+    username: root
+    password: gamemode
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+
