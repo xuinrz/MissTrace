@@ -3,6 +3,7 @@ package misstrace.Entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(	name = "matchpost")
@@ -26,4 +27,6 @@ public class MatchPost {
     private Boolean isMatched = false;
     //    发帖位置
     private String position;
+//    发帖时间
+    private String postTime;
 }

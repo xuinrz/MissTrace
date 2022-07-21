@@ -3,6 +3,7 @@ package misstrace.Entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(	name = "misspost")
@@ -21,8 +22,12 @@ public class MissPost {
     private Boolean isChecking = true;
     //    是否过审？建立帖子时设为未过审
     private Boolean isPassed = false;
+    //    迷踪帖下是否有待审的匹配贴？建立帖子时设为没有
+    private Boolean isMatching = false;
     //    是否被匹配成功？建立帖子时设为未匹配成功
     private Boolean isMatched = false;
     //    发帖位置
     private String position;
+    //    发帖时间
+    private String postTime;
 }

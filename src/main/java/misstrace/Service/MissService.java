@@ -10,7 +10,8 @@ import java.util.Optional;
 @Service
 public interface MissService {
     void addMissPost(MissPost missPost);
+    void updateMissPost(MissPost missPost);
     Integer getNewId();
     Optional<MissPost> findMissPostById(Integer id);
-    List<MissPost> findPassedMissPosts();
+    List<MissPost> showPosts();
 }
