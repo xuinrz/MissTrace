@@ -7,7 +7,7 @@ import misstrace.Service.MatchService;
 import misstrace.Service.MissService;
 import misstrace.Service.UserService;
 import misstrace.Util.JwtUtil;
-import misstrace.payload.Result;
+import misstrace.Payload.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

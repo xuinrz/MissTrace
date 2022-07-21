@@ -3,7 +3,7 @@ package misstrace.Controller;
 import misstrace.Entity.User;
 import misstrace.Service.UserService;
 import misstrace.Util.JwtUtil;
-import misstrace.payload.Result;
+import misstrace.Payload.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
