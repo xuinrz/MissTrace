@@ -30,10 +30,15 @@ public class AuthController {
         }
 
 
+
+
+
+
+
         String cookie = userService.casLogin(sid,password);
-//        这里暂时假设统一认证登录成功了！
+//        这里暂时假设统一认证登录成功了
 
-
+//          TODO  接入统一认证，并记录学生的姓名
 
 
 
@@ -46,7 +51,7 @@ public class AuthController {
              userId = op.get().getId().toString();
              isAdmin = op.get().getIsAdmin();
         }
-        else{
+        else{//没有该用户的记录，那就新建
             User user = new User();
             user.setId(userService.getNewId());
             user.setSid(sid);

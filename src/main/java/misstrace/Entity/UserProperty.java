@@ -11,11 +11,13 @@ public class UserProperty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//id自增
     private Integer id;
-//    绑定学号
-    private String sid;
-//    绑定商品
-    private String gid;
+    @ManyToOne
+    @JoinColumn(name = "uid")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "gid")
+    private Goods goods;
 //    拥有数量
-    private Integer number;
+    private Integer number = 1;
 
 }

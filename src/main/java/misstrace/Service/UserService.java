@@ -10,7 +10,9 @@ public interface UserService {
     Optional<User> findUserBySid(String sid);
     Integer getNewId();
     void addUser(User user);
+    void updateUser(User user);
     void modifyUser(User user);
+    User getUserByToken(String token);
 
 
 

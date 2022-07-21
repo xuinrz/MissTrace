@@ -16,7 +16,10 @@ public interface MissRepository extends JpaRepository<MissPost,Integer> {
 
     Optional<MissPost> findById(Integer id);
 
-    @Query("FROM MissPost WHERE isPassed=true AND isMatching=false ")
-    List<MissPost> showPosts();
+    @Query("FROM MissPost WHERE isPassed=true AND isMatching=false AND isMatched=false ORDER BY postTime DESC ")
+    List<MissPost> findDisplayablePost();
+
+    @Query("FROM MissPost WHERE isChecking=true ORDER BY postTime DESC ")
+    List<MissPost>findCheckingPost();
 
 }

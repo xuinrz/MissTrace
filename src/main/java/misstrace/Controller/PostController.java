@@ -8,6 +8,7 @@ import misstrace.Service.MissService;
 import misstrace.Service.UserService;
 import misstrace.Util.JwtUtil;
 import misstrace.Payload.Result;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +49,7 @@ public class PostController {
         missPost.setPosition(position);
 //        设定发帖时间
         Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String nowTime = dateFormat.format(date);
         System.out.println(nowTime);
         missPost.setPostTime(nowTime);
@@ -57,34 +58,33 @@ public class PostController {
         return Result.success(newtoken);
     }
 
-    @PostMapping("/match")
-    public Result PostMatch(Integer missId, String img, String position, HttpServletRequest request) {
+    @PostMapping("/match/{id}")
+    public Result PostMatch(@PathVariable("id") Integer missId, String img, String position, HttpServletRequest request) {
         if (img == null) return Result.failure(-1, "图片不能为空");
-//        读取token
         String token = request.getHeader("token");
-//        String userIdStr = JwtUtil.getUserId(token);
         Map<String, Object> info = JwtUtil.getInfo(token);
-//        重新生成token
-        String newtoken = JwtUtil.refreshToken(token);
 
         User user = userService.findUserBySid((String) info.get("sid")).get();
         MissPost missPost = missService.findMissPostById(missId).get();
+        if (user.getId().equals(missPost.getUser().getId())){
+            return Result.failure(-1,"不能匹配自己的迷踪帖！");
+        }
         if(missPost.getIsMatched()){
-            return Result.failure(-1,"该迷踪帖已被匹配！");
+            return Result.failure(-2,"该迷踪帖已被匹配！");
         }
         if(missPost.getIsMatching()){
-            return Result.failure(-1,"无法匹配。已经有人在匹配此帖了，看看其他迷踪帖吧");
+            return Result.failure(-3,"无法匹配。已经有人在匹配此帖了，看看其他迷踪帖吧");
         }
 
 
         MatchPost matchPost = new MatchPost();
-        matchPost.setId(missService.getNewId());
+        matchPost.setId(matchService.getNewId());
         matchPost.setUser(user);
         matchPost.setMissPost(missPost);
         matchPost.setImg(img);
 //        设定发帖时间
         Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String nowTime = dateFormat.format(date);
         System.out.println(nowTime);
         matchPost.setPostTime(nowTime);
@@ -98,10 +98,10 @@ public class PostController {
         missPost.setIsMatching(true);
         missService.updateMissPost(missPost);
         matchService.addMatchPost(matchPost);
-        return Result.success(newtoken);
+        return Result.success(JwtUtil.refreshToken(token));
     }
 
-    @PostMapping("/showmiss")
+    @PostMapping("/show")
     public Result showMiss(HttpServletRequest request) {
         String token = request.getHeader("token");
         Map<String, Object> info = JwtUtil.getInfo(token);

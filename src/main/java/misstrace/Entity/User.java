@@ -22,4 +22,8 @@ public class User {
     private List<MissPost> missPostList;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<MatchPost> matchPostList;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    private List<UserProperty> userPropertyList;
+    public void addCoin(){coin++;}//获得积分时调用
+    public void costCoin(Integer cost){coin-=cost;}//购买物品时调用
 }

@@ -12,4 +12,7 @@ public interface GoodsRepository extends JpaRepository<Goods,Integer> {
 
     @Query("SELECT max(id) FROM Goods ")
     Integer getMaxId();
+
+    @Query("FROM Goods WHERE onSale=true ")
+    List<Goods> findOnSaleGoods();
 }

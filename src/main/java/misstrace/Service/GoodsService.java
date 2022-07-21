@@ -10,4 +10,6 @@ public interface GoodsService {
     List<Goods> showGoods();
     Integer getNewId();
     void createNewGoods(String description, String img, Integer cost);
+    void offSaleById(Integer id);
+    Boolean buyGoodsByIdAndToken(Integer id,String token);
 }

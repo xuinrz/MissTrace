@@ -1,15 +1,17 @@
 package misstrace.Controller;
 
+import misstrace.Entity.Goods;
+import misstrace.Entity.User;
 import misstrace.Payload.Result;
 import misstrace.Service.GoodsService;
+import misstrace.Service.UserPropertyService;
 import misstrace.Service.UserService;
 import misstrace.Util.JwtUtil;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,8 @@ public class GoodsController {
     UserService userService;
     @Resource
     GoodsService goodsService;
+    @Resource
+    UserPropertyService userPropertyService;
 
 
     @PostMapping("/show")
@@ -31,11 +35,50 @@ public class GoodsController {
     }
     @PostMapping("/add")
     public Result addGoods(String description, String img, Integer cost,HttpServletRequest request) {
-        goodsService.createNewGoods(description,img,cost);
         String token = request.getHeader("token");
-        String newToken = JwtUtil.refreshToken(token);
-        return Result.success(newToken);
+        if(userService.getUserByToken(token).getIsAdmin()) {
+            goodsService.createNewGoods(description,img,cost);
+            String newToken = JwtUtil.refreshToken(token);
+            return Result.success(newToken);
+        }else return Result.failure(-3,"添加失败，普通用户无权限添加商品");
     }
 
+    @DeleteMapping("/delete/{id}")
+    public Result addGoods(@PathVariable("id") Integer id, HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if(userService.getUserByToken(token).getIsAdmin()) {
+            goodsService.offSaleById(id);
+            return Result.success(JwtUtil.refreshToken(token));
+        }else return Result.failure(-3,"删除失败，普通用户无权限删除商品");
+    }
+
+    @PostMapping("/buy/{id}")
+    public Result buyGoods(@PathVariable("id") Integer id, HttpServletRequest request){
+        String token = request.getHeader("token");
+        if(goodsService.buyGoodsByIdAndToken(id,token)){
+            return Result.success(JwtUtil.refreshToken(token));
+        }else return Result.failure(-1,"积分不足，购买失败！");
+    }
+
+    @PostMapping("/my")
+    public Result showMyProperty(HttpServletRequest request){
+        String token = request.getHeader("token");
+        User user = userService.getUserByToken(token);
+        List dataList = userPropertyService.myPropertyList(user.getId());
+        return Result.success(dataList,JwtUtil.refreshToken(token));
+    }
+    @PostMapping("/download")
+    public Result downloadUserProperty(HttpServletRequest request){
+        String token = request.getHeader("token");
+        if(userService.getUserByToken(token).getIsAdmin()) {
+
+//            TODO 下载所有人资产的服务
+            List dataList = new ArrayList();
+
+
+
+            return Result.success(dataList,JwtUtil.refreshToken(token));
+        }else return Result.failure(-3,"删除失败，普通用户无权限删除商品");
+    }
 
 }

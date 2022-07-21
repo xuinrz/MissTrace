@@ -13,5 +13,8 @@ public interface MissService {
     void updateMissPost(MissPost missPost);
     Integer getNewId();
     Optional<MissPost> findMissPostById(Integer id);
-    List<MissPost> showPosts();
+    List showPosts();
+    List showCheckingMissPost();
+    void passMissPostById(Integer missId);
+    void refuseMissPostById(Integer missId);
 }

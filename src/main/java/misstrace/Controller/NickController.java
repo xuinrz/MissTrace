@@ -35,6 +35,16 @@ public class NickController {
         data.put("nickName",nickName);
         return Result.success(data,newtoken);
     }
+    @PostMapping("/coin")
+    public Result getCoin(HttpServletRequest request) {
+//        读取token
+        String token = request.getHeader("token");
+        User user = userService.getUserByToken(token);
+        Integer coin = user.getCoin();
+        Map<String,Object> data = new HashMap<>();
+        data.put("coin",coin);
+        return Result.success(data,JwtUtil.refreshToken(token));
+    }
     @PostMapping("/changenickname")
     public Result changeNickName(String nickName,HttpServletRequest request) {
 //        读取token
