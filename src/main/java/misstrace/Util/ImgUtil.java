@@ -8,10 +8,10 @@ import java.util.UUID;
 
 public class ImgUtil {
 
-    //    定义头像存储地址
-    private static final String AVATAR_PATH = "D:/backweb/apache-tomcat-10.0.11/webapps/misstrace/avatar/";
-    //    定义访问头像的路径根部
-    private static final String AVATAR_LOAD_PATH = "http://localhost:8080/misstrace/avatar/";
+    //    定义头像存储地址 /project/misstrace/tomcat8port8080/webapps
+    private static final String AVATAR_PATH = "/project/misstrace/tomcat8port8080/webapps/avatar";
+    //    定义访问头像的路径根部 http
+    private static final String AVATAR_LOAD_PATH = "http://139.159.252.129/misstrace/avatar/";
 
     public static String uploadAvatar(MultipartFile img) {
         //获得上传文件的名称
@@ -30,9 +30,9 @@ public class ImgUtil {
     }
 
     //    定义存储图片地址
-    private static final String IMG_PATH = "D:/backweb/apache-tomcat-10.0.11/webapps/misstrace/img/";
+    private static final String IMG_PATH = "/project/misstrace/tomcat8port8080/webapps/img";
     //    定义访问图片的路径根部
-    private static final String IMG_LOAD_PATH = "http://localhost:8080/misstrace/img/";
+    private static final String IMG_LOAD_PATH = "http://139.159.252.129/misstrace/img/";
 
     public static String uploadImg(MultipartFile img) {
         //获得上传文件的名称
@@ -51,5 +51,6 @@ public class ImgUtil {
         return IMG_LOAD_PATH+newFileName;
     }
 
+// TODO 删除旧头像和删除旧帖图的方法。
 
 }
