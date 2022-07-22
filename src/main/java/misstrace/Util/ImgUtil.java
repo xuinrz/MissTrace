@@ -24,6 +24,7 @@ public class ImgUtil {
         try {
             img.transferTo(file);
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
         return AVATAR_LOAD_PATH+newFileName;
@@ -52,5 +53,6 @@ public class ImgUtil {
     }
 
 // TODO 删除旧头像和删除旧帖图的方法。
+// TODO 对上传的图片进行压缩
 
 }
