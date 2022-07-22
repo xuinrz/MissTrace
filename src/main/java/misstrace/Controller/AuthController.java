@@ -2,6 +2,7 @@ package misstrace.Controller;
 
 import misstrace.Entity.User;
 import misstrace.Service.UserService;
+import misstrace.Util.CasLoginUtil;
 import misstrace.Util.JwtUtil;
 import misstrace.Payload.Result;
 import org.springframework.web.bind.annotation.*;
@@ -28,45 +29,37 @@ public class AuthController {
         if (sid==null||sid.equals("")||password.equals("")||password==null){
             return Result.failure(-1,"学号或密码不能为空");
         }
-
-
-
-
-
-
-
-        String cookie = userService.casLogin(sid,password);
 //        这里暂时假设统一认证登录成功了
-
-//          TODO  接入统一认证，并记录学生的姓名
-
-
+//       TODO  需要实现下面的CasLoginUtil.tongyirenzheng方法：接入统一认证，登录成功则返回学生姓名，失败则返回"登陆失败"
+        String sduLogin = CasLoginUtil.tongyirenzheng(sid,password);
 
 
-        Boolean isAdmin = false;
-        Optional<User> op = userService.findUserBySid(sid);
-        String userId = null;
-//        如果这个用户已经被记录了,那就返回一个token，就是说登陆成功了
-        if(op.isPresent()){
-             userId = op.get().getId().toString();
-             isAdmin = op.get().getIsAdmin();
-        }
-        else{//没有该用户的记录，那就新建
-            User user = new User();
-            user.setId(userService.getNewId());
-            user.setSid(sid);
-            userService.addUser(user);
+//        如果获取到了用户名，说明通过了统一认证，那就进入我写的User系统了（学号有记录就获取记录，学号没有被记录就添加记录）
+        if(!sduLogin.equals("登陆失败")) {
+
+            Optional<User> op = userService.findUserBySid(sid);
+            String userId;
+            User user;
+//        如果这个用户已经被记录了,那就获取该用户（以及该用户权限）
+            if (op.isPresent()) {
+                user = op.get();
+            } else {//没有该用户的记录，那就新建用户
+                user = new User();
+                user.setId(userService.getNewId());
+                user.setSid(sid);
+                userService.addUser(user);
+            }
             userId = user.getId().toString();
-        }
-        Map<String, Object> info = new HashMap<>();
-        info.put("sid", sid);
-        info.put("password", password);
-        //生成JWT字符串
-        String token = JwtUtil.sign(userId, info);
-        Map<String,Object> data = new HashMap<>();
-        data.put("isAdmin",isAdmin);
-        return Result.success(data,token);
-
+            Map<String, Object> info = new HashMap<>();
+            info.put("sid", sid);
+            info.put("password", password);
+            //生成JWT字符串
+            String token = JwtUtil.sign(userId, info);
+            Map<String, Object> data = new HashMap<>();
+            data.put("isAdmin", user.getIsAdmin());//这里返回用户的权限，方便前端确定是否显示管理员入口
+            return Result.success(data, token);
+        }else
+            return Result.failure(-2,"用户名或密码错误，统一认证登陆失败");
     }
 }
 
