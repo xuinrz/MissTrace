@@ -49,7 +49,9 @@ public class PostController {
         missPost.setId(missService.getNewId());
         missPost.setUser(user);
         missPost.setText(text);
-        missPost.setImg(ImgUtil.uploadImg(img));
+        String imgUrl = ImgUtil.uploadImg(img);
+        if(imgUrl==null)return Result.failure(-4,"图片过大");
+        missPost.setImg(imgUrl);
         missPost.setLongitude(longitude);
         missPost.setLatitude(latitude);
         missPost.setPostTime(DataUtil.getTime());//设定发帖时间
@@ -82,7 +84,9 @@ public class PostController {
         matchPost.setId(matchId);
         matchPost.setUser(user);
         matchPost.setMissPost(missPost);
-        matchPost.setImg(ImgUtil.uploadImg(img));
+        String imgUrl = ImgUtil.uploadImg(img);
+        if(imgUrl==null)return Result.failure(-4,"图片过大");
+        matchPost.setImg(imgUrl);
         matchPost.setPostTime(DataUtil.getTime());//设定发帖时间
         matchPost.setLongitude(longitude);
         matchPost.setLatitude(latitude);
@@ -95,7 +99,7 @@ public class PostController {
             return Result.success(JwtUtil.refreshToken(token));
         }else{//距离大于50米，直接判定为匹配失败
             matchService.refuseMatchPostById(matchId);//直接调用"匹配帖匹配失败"的服务
-            return Result.failure(-4,"距离太远，直接判定为匹配失败");
+            return Result.failure(-5,"距离太远，直接判定为匹配失败");
         }
 
     }

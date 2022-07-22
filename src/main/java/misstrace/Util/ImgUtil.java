@@ -45,6 +45,7 @@ public class ImgUtil {
         try {
             img.transferTo(file);
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
         return IMG_LOAD_PATH+newFileName;
