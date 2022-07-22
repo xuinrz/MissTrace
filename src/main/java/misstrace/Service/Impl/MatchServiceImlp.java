@@ -8,6 +8,7 @@ import misstrace.Repo.MissRepository;
 import misstrace.Service.MatchService;
 import misstrace.Service.MissService;
 import misstrace.Service.UserService;
+import misstrace.Util.DataUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -65,8 +66,10 @@ public class MatchServiceImlp implements MatchService {
         MatchPost matchPost = matchRepository.findById(matchId).get();
         matchPost.setIsChecking(false);
         matchPost.setIsMatched(true);
+        matchPost.setCheckTime(DataUtil.getTime());
         MissPost missPost = matchPost.getMissPost();
         missPost.setIsMatched(true);
+        missPost.setCheckTime(DataUtil.getTime());
         missService.updateMissPost(missPost);
         matchRepository.save(matchPost);
 //        给两人添加一个积分
@@ -84,6 +87,7 @@ public class MatchServiceImlp implements MatchService {
         MatchPost matchPost = matchRepository.findById(matchId).get();
         matchPost.setIsChecking(false);
         matchPost.setIsMatched(false);
+        matchPost.setCheckTime(DataUtil.getTime());
         MissPost missPost = matchPost.getMissPost();
         missPost.setIsMatching(false);
         missService.updateMissPost(missPost);

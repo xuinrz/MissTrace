@@ -3,6 +3,7 @@ package misstrace.Service;
 import misstrace.Entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public interface UserService {
@@ -13,6 +14,7 @@ public interface UserService {
     void updateUser(User user);
     void modifyUser(User user);
     User getUserByToken(String token);
+    List getMsgByUserId(Integer userId);
 
 
 

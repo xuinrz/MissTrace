@@ -14,4 +14,7 @@ public interface MatchRepository extends JpaRepository<MatchPost, Integer> {
 
     @Query("FROM MatchPost WHERE isChecking=true ORDER BY postTime DESC ")
     List<MatchPost> findCheckingPost();
+
+    @Query("FROM MatchPost WHERE user.id=?1 AND isChecking=false ")
+    List<MatchPost> getMatchMessageByUserId(Integer userId);
 }

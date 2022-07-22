@@ -22,4 +22,6 @@ public interface MissRepository extends JpaRepository<MissPost,Integer> {
     @Query("FROM MissPost WHERE isChecking=true ORDER BY postTime DESC ")
     List<MissPost>findCheckingPost();
 
+    @Query("FROM MissPost WHERE user.id=?1 AND isChecking=false ")
+    List<MissPost> getMissMessageByUserId(Integer userId);
 }

@@ -6,12 +6,16 @@ import misstrace.Entity.User;
 import misstrace.Service.MatchService;
 import misstrace.Service.MissService;
 import misstrace.Service.UserService;
+import misstrace.Util.DataUtil;
+import misstrace.Util.ImgUtil;
 import misstrace.Util.JwtUtil;
 import misstrace.Payload.Result;
+import misstrace.Util.LocationUtil;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +35,7 @@ public class PostController {
 
 
     @PostMapping("/miss")
-    public Result PostMiss(String text, String img, String position, HttpServletRequest request) {
+    public Result PostMiss(String text, MultipartFile img,Double  latitude, Double longitude, HttpServletRequest request) {
         if (img == null) return Result.failure(-1, "图片不能为空");
 //        读取token
         String token = request.getHeader("token");
@@ -45,21 +49,17 @@ public class PostController {
         missPost.setId(missService.getNewId());
         missPost.setUser(user);
         missPost.setText(text);
-        missPost.setImg(img);
-        missPost.setPosition(position);
-//        设定发帖时间
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String nowTime = dateFormat.format(date);
-        System.out.println(nowTime);
-        missPost.setPostTime(nowTime);
+        missPost.setImg(ImgUtil.uploadImg(img));
+        missPost.setLongitude(longitude);
+        missPost.setLatitude(latitude);
+        missPost.setPostTime(DataUtil.getTime());//设定发帖时间
 
         missService.addMissPost(missPost);
         return Result.success(newtoken);
     }
 
     @PostMapping("/match/{id}")
-    public Result PostMatch(@PathVariable("id") Integer missId, String img, String position, HttpServletRequest request) {
+    public Result PostMatch(@PathVariable("id") Integer missId, MultipartFile img, Double latitude, Double longitude, HttpServletRequest request) {
         if (img == null) return Result.failure(-1, "图片不能为空");
         String token = request.getHeader("token");
         Map<String, Object> info = JwtUtil.getInfo(token);
@@ -78,27 +78,26 @@ public class PostController {
 
 
         MatchPost matchPost = new MatchPost();
-        matchPost.setId(matchService.getNewId());
+        Integer matchId = matchService.getNewId();
+        matchPost.setId(matchId);
         matchPost.setUser(user);
         matchPost.setMissPost(missPost);
-        matchPost.setImg(img);
-//        设定发帖时间
-        Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String nowTime = dateFormat.format(date);
-        System.out.println(nowTime);
-        matchPost.setPostTime(nowTime);
-        matchPost.setPosition(position);
+        matchPost.setImg(ImgUtil.uploadImg(img));
+        matchPost.setPostTime(DataUtil.getTime());//设定发帖时间
+        matchPost.setLongitude(longitude);
+        matchPost.setLatitude(latitude);
+        Double distance = LocationUtil.getDistance(missPost.getLatitude(),missPost.getLongitude(),latitude,longitude);
+        if(distance<=50){//距离小于50米，提交审核
+            //这里把迷踪帖设为“有待审匹配帖”，从而不被搜索到
+            missPost.setIsMatching(true);
+            missService.updateMissPost(missPost);
+            matchService.addMatchPost(matchPost);
+            return Result.success(JwtUtil.refreshToken(token));
+        }else{//距离大于50米，直接判定为匹配失败
+            matchService.refuseMatchPostById(matchId);//直接调用"匹配帖匹配失败"的服务
+            return Result.failure(-4,"距离太远，直接判定为匹配失败");
+        }
 
-
-//      TODO 判断发帖地的距离
-
-
-//      这里把迷踪帖设为“有待审匹配帖”，从而不被搜索到
-        missPost.setIsMatching(true);
-        missService.updateMissPost(missPost);
-        matchService.addMatchPost(matchPost);
-        return Result.success(JwtUtil.refreshToken(token));
     }
 
     @PostMapping("/show")

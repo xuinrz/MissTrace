@@ -26,7 +26,10 @@ public class MatchPost {
     //    是否被匹配成功？建立帖子时设为未匹配成功
     private Boolean isMatched = false;
     //    发帖位置
-    private String position;
-//    发帖时间
+    private Double longitude;//精度
+    private Double latitude ;//纬度
+    //    发帖时间
     private String postTime;
+    //    审核时间
+    private String checkTime;
 }

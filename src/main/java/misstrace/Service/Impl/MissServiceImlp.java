@@ -3,6 +3,7 @@ package misstrace.Service.Impl;
 import misstrace.Entity.MissPost;
 import misstrace.Repo.MissRepository;
 import misstrace.Service.MissService;
+import misstrace.Util.DataUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,7 +51,7 @@ public class MissServiceImlp implements MissService {
             m.put("img", post.getImg());
             m.put("avatar", post.getUser().getAvatar());
             m.put("nickName", post.getUser().getNickName());
-            m.put("sid", post.getUser().getSid());
+            m.put("sid", post.getUser().getSid());//前端用学号来判断是否添加发布匹配帖按钮
             m.put("postTime",post.getPostTime());
             dataList.add(m);
         }
@@ -83,6 +84,7 @@ public class MissServiceImlp implements MissService {
         MissPost missPost = missRepository.findById(missId).get();
         missPost.setIsChecking(false);
         missPost.setIsPassed(true);
+        missPost.setCheckTime(DataUtil.getTime());
         missRepository.save(missPost);
 
 
@@ -93,6 +95,7 @@ public class MissServiceImlp implements MissService {
         MissPost missPost = missRepository.findById(missId).get();
         missPost.setIsChecking(false);
         missPost.setIsPassed(false);
+        missPost.setCheckTime(DataUtil.getTime());
         missRepository.save(missPost);
     }
 }
