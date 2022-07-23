@@ -32,8 +32,7 @@ public class AuthController {
         if (sid==null||sid.equals("")||password.equals("")||password==null){
             return Result.failure(-3,"学号或密码不能为空");
         }
-//        这里暂时假设统一认证登录成功了
-//       TODO  需要实现下面的CasLoginUtil.tongyirenzheng方法：接入统一认证，登录成功则返回学生姓名，失败则返回"登陆失败"
+//      统一认证登陆
         String sduLogin = null;
         try {
             sduLogin = loginService.serve(sid,password);
