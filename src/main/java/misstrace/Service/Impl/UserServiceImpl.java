@@ -8,8 +8,10 @@ import misstrace.Repo.MissRepository;
 import misstrace.Repo.UserRepository;
 import misstrace.Service.UserService;
 import misstrace.Util.DataUtil;
+import misstrace.Util.ImgUtil;
 import misstrace.Util.JwtUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -114,6 +116,14 @@ public class UserServiceImpl implements UserService {
         dataList.sort(Comparator.comparing((HashMap a) -> DataUtil.parseString((String) a.get("checkTime"))));
         System.out.println(dataList);
         return dataList;
+    }
+
+    @Override
+    public void changeAvatar(User user, MultipartFile avatar) {
+        if(user.getAvatar()!=null)ImgUtil.deleteImg(user.getAvatar());//存在旧头像则删除
+        String avatarPath = ImgUtil.uploadAvatar(avatar);
+        user.setAvatar(avatarPath);
+        modifyUser(user);
     }
 
 

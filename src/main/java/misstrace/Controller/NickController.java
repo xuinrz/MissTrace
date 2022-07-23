@@ -2,7 +2,6 @@ package misstrace.Controller;
 
 import misstrace.Entity.User;
 import misstrace.Service.UserService;
-import misstrace.Util.ImgUtil;
 import misstrace.Util.JwtUtil;
 import misstrace.Payload.Result;
 import org.springframework.web.bind.annotation.*;
@@ -59,9 +58,7 @@ public class NickController {
     public Result changeAvatar(MultipartFile avatar, HttpServletRequest request) {
         String token = request.getHeader("token");
         User user = userService.getUserByToken(token);
-        String avatarPath = ImgUtil.uploadAvatar(avatar);
-        user.setAvatar(avatarPath);
-        userService.modifyUser(user);
+        userService.changeAvatar(user,avatar);
         return Result.success(JwtUtil.refreshToken(token));
     }
 

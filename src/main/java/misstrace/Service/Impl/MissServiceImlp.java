@@ -4,6 +4,7 @@ import misstrace.Entity.MissPost;
 import misstrace.Repo.MissRepository;
 import misstrace.Service.MissService;
 import misstrace.Util.DataUtil;
+import misstrace.Util.ImgUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -96,6 +97,7 @@ public class MissServiceImlp implements MissService {
         missPost.setIsChecking(false);
         missPost.setIsPassed(false);
         missPost.setCheckTime(DataUtil.getTime());
+        if(missPost.getImg()!=null) ImgUtil.deleteImg(missPost.getImg());//不过审，直接删除图片
         missRepository.save(missPost);
     }
 }

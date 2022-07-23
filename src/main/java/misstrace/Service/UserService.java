@@ -2,6 +2,7 @@ package misstrace.Service;
 
 import misstrace.Entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ public interface UserService {
     void modifyUser(User user);
     User getUserByToken(String token);
     List getMsgByUserId(Integer userId);
+    void changeAvatar(User user, MultipartFile avatar);
 
 
 

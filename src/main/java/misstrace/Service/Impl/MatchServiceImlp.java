@@ -9,6 +9,7 @@ import misstrace.Service.MatchService;
 import misstrace.Service.MissService;
 import misstrace.Service.UserService;
 import misstrace.Util.DataUtil;
+import misstrace.Util.ImgUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -70,6 +71,9 @@ public class MatchServiceImlp implements MatchService {
         MissPost missPost = matchPost.getMissPost();
         missPost.setIsMatched(true);
         missPost.setCheckTime(DataUtil.getTime());
+//        匹配成功，迷踪帖和匹配帖的图片都删除
+        if(missPost.getImg()!=null) ImgUtil.deleteImg(missPost.getImg());
+        if(matchPost.getImg()!=null) ImgUtil.deleteImg(matchPost.getImg());
         missService.updateMissPost(missPost);
         matchRepository.save(matchPost);
 //        给两人添加一个积分
@@ -88,6 +92,7 @@ public class MatchServiceImlp implements MatchService {
         matchPost.setIsChecking(false);
         matchPost.setIsMatched(false);
         matchPost.setCheckTime(DataUtil.getTime());
+        if(matchPost.getImg()!=null) ImgUtil.deleteImg(matchPost.getImg());//匹配失败，直接删除匹配帖图片
         MissPost missPost = matchPost.getMissPost();
         missPost.setIsMatching(false);
         missService.updateMissPost(missPost);
