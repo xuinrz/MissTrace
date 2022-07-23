@@ -10,4 +10,6 @@ public interface UserPropertyService {
 
     List myPropertyList(Integer userId);
 
+    String download();
+
 }

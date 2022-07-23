@@ -1,6 +1,5 @@
 package misstrace.Controller;
 
-import misstrace.Entity.Goods;
 import misstrace.Entity.User;
 import misstrace.Payload.Result;
 import misstrace.Service.GoodsService;
@@ -72,13 +71,13 @@ public class GoodsController {
         String token = request.getHeader("token");
         if(userService.getUserByToken(token).getIsAdmin()) {
 
-//            TODO 下载所有人资产的服务
-            List dataList = new ArrayList();
+
+            String excel = userPropertyService.download();
 
 
 
-            return Result.success(dataList,JwtUtil.refreshToken(token));
-        }else return Result.failure(-3,"删除失败，普通用户无权限删除商品");
+            return Result.success(excel,JwtUtil.refreshToken(token));
+        }else return Result.failure(-3,"下载失败，普通用户无权限");
     }
 
 }

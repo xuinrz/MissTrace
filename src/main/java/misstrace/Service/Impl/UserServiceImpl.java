@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByToken(String token) {
-        Map<String, Object> info = JwtUtil.getInfo(token);
-        User user = findUserBySid((String) info.get("sid")).get();
+        Integer userId = Integer.parseInt(JwtUtil.getUserId(token));
+        User user = userRepository.findById(userId).get();
         return user;
     }
 
