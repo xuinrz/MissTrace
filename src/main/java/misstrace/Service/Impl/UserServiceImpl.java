@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -28,11 +27,6 @@ public class UserServiceImpl implements UserService {
     MatchRepository matchRepository;
 
 
-    @Override
-    public String casLogin(String sid, String password) {
-        System.out.println("假设统一认证登录成功");
-        return "假设统一认证登录成功";
-    }
 
     @Override
     public Optional<User> findUserBySid(String sid) {
@@ -112,9 +106,9 @@ public class UserServiceImpl implements UserService {
             dataList.add(m);
         }
         //利用匿名类排序
-        System.out.println(dataList);
+//        System.out.println(dataList);
         dataList.sort(Comparator.comparing((HashMap a) -> DataUtil.parseString((String) a.get("checkTime"))));
-        System.out.println(dataList);
+//        System.out.println(dataList);
         return dataList;
     }
 

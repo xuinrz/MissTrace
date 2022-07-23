@@ -55,7 +55,6 @@ public static Boolean deleteImg(String imgLoadPath) {
     //路径是个文件且不为空时删除文件
     if(file.isFile()&&file.exists()){
         flag = file.delete();
-        System.out.println("删除"+flag);
     }
     //删除失败时，返回false
     return flag;

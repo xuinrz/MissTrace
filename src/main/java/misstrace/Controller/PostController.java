@@ -64,9 +64,8 @@ public class PostController {
     public Result PostMatch(@PathVariable("id") Integer missId, MultipartFile img, Double latitude, Double longitude, HttpServletRequest request) {
         if (img == null) return Result.failure(-1, "图片不能为空");
         String token = request.getHeader("token");
-        Map<String, Object> info = JwtUtil.getInfo(token);
 
-        User user = userService.findUserBySid((String) info.get("sid")).get();
+        User user = userService.getUserByToken(token);
         MissPost missPost = missService.findMissPostById(missId).get();
         if (user.getId().equals(missPost.getUser().getId())){
             return Result.failure(-1,"不能匹配自己的迷踪帖！");
