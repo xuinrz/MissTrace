@@ -25,6 +25,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<UserProperty> userPropertyList;
     private String name;
-    public void addCoin(){coin++;}//获得积分时调用
-    public void costCoin(Integer cost){coin-=cost;}//购买物品时调用
+    public synchronized void addCoin(){coin++;}//获得积分时调用
+    public synchronized void costCoin(Integer cost){coin-=cost;}//购买物品时调用
 }
