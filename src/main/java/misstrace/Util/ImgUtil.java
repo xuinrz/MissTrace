@@ -23,7 +23,7 @@ public class ImgUtil {
         //根据路径和新文件名，生成文件，并写入图片
         File file = new File(AVATAR_PATH,newFileName);
         //压缩图片
-        zipImg(avatar,AVATAR_PATH+newFileName);
+        zipAvatar(avatar,AVATAR_PATH+newFileName);
         return AVATAR_LOAD_PATH+newFileName;
     }
 
@@ -64,8 +64,8 @@ public static Boolean deleteImg(String imgLoadPath) {
 public static Boolean zipImg(MultipartFile img,String path) {
     try {
         //先压缩并保存图片
-        Thumbnails.of(img.getInputStream()).size(480,720)  //压缩尺寸 范围（0.00--1.00）
-                .outputQuality(0.3f)  //压缩质量 范围（0.00--1.00）
+        Thumbnails.of(img.getInputStream()).size(720,1080)  //压缩尺寸 范围（0.00--1.00）
+                .outputQuality(0.4f)  //压缩质量 范围（0.00--1.00）
                 .toFile(path); //输出路径
     } catch (IOException e) {
         e.printStackTrace();
@@ -73,4 +73,16 @@ public static Boolean zipImg(MultipartFile img,String path) {
     }
         return true;
 }
+    public static Boolean zipAvatar(MultipartFile img,String path) {
+        try {
+            //先压缩并保存图片
+            Thumbnails.of(img.getInputStream()).size(128,128)  //压缩尺寸 范围（0.00--1.00）
+                    .outputQuality(0.4f)  //压缩质量 范围（0.00--1.00）
+                    .toFile(path); //输出路径
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }
