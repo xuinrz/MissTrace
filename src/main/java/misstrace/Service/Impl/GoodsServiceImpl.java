@@ -8,7 +8,9 @@ import misstrace.Repo.UserPropertyRepository;
 import misstrace.Service.GoodsService;
 import misstrace.Service.UserPropertyService;
 import misstrace.Service.UserService;
+import misstrace.Util.ImgUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
@@ -52,11 +54,12 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void createNewGoods(String description, String img, Integer cost) {
+    public void createNewGoods(String description, MultipartFile img, Integer cost) {
         Goods goods = new Goods();
         goods.setId(getNewId());
         goods.setDescription(description);
-        goods.setImg(img);
+        String imgPath = ImgUtil.uploadImg(img);
+        goods.setImg(imgPath);
         goods.setCost(cost);
         goodsRepository.save(goods);
     }

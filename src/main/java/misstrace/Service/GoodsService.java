@@ -2,6 +2,7 @@ package misstrace.Service;
 
 import misstrace.Entity.Goods;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface GoodsService {
     List<Goods> showGoods();
     Integer getNewId();
-    void createNewGoods(String description, String img, Integer cost);
+    void createNewGoods(String description, MultipartFile img, Integer cost);
     void offSaleById(Integer id);
     Boolean buyGoodsByIdAndToken(Integer id,String token);
 }
