@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -26,7 +28,9 @@ public Result showMyProperty(HttpServletRequest request){
     String token = request.getHeader("token");
     User user = userService.getUserByToken(token);
     List dataList = userService.getMsgByUserId(user.getId());
-    return Result.success(dataList, JwtUtil.refreshToken(token));
+    Map list = new HashMap<>();
+    list.put("msgList",dataList);
+    return Result.success(list, JwtUtil.refreshToken(token));
 }
 
 

@@ -23,7 +23,8 @@ public class ImgUtil {
         //根据路径和新文件名，生成文件，并写入图片
         File file = new File(AVATAR_PATH,newFileName);
         //压缩图片
-        zipAvatar(avatar,AVATAR_PATH+newFileName);
+        Boolean flag = zipAvatar(avatar,AVATAR_PATH+newFileName);
+        if(!flag)return null;
         return AVATAR_LOAD_PATH+newFileName;
     }
 
@@ -41,7 +42,8 @@ public class ImgUtil {
         //根据路径和新文件名，生成文件，并写入图片
         File file = new File(IMG_PATH,newFileName);
         //压缩图片
-        zipImg(img,IMG_PATH+newFileName);
+        Boolean flag = zipImg(img,IMG_PATH+newFileName);
+        if(!flag)return null;
         return IMG_LOAD_PATH+newFileName;
 
     }

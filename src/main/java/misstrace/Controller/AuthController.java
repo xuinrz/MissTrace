@@ -31,7 +31,7 @@ public class AuthController {
     @PostMapping("/login")
     public Result login( String sid, String password) {
         if (sid==null||sid.equals("")||password.equals("")||password==null){
-            return Result.failure(-3,"学号或密码不能为空");
+            return Result.failure(1001,"学号或密码不能为空");
         }
         String sduLogin = null;
         Boolean isAdmin = false;
@@ -81,9 +81,9 @@ public class AuthController {
             data.put("avatar",user.getAvatar());
             data.put("nickName",user.getNickName());
             data.put("name",user.getName());
-            return Result.success(data, token);
+            return Result.loginSuccess(data, token,"登陆成功！");
         }else
-            return Result.failure(-2,"用户名或密码错误，统一认证登陆失败");
+            return Result.failure(1002,"用户名或密码错误，统一认证登陆失败");
     }
 }
 

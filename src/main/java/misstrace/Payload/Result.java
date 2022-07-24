@@ -64,6 +64,24 @@ public class Result implements Serializable {
         result.setToken(token);
         return result;
     }
+    public static Result success(Object data, String token,String msg) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setData(data);
+        result.setToken(token);
+        result.setMsg(msg);
+
+        return result;
+    }
+    public static Result loginSuccess(Object data, String token,String msg) {
+        Result result = new Result();
+        result.setCode(10);
+        result.setData(data);
+        result.setToken(token);
+        result.setMsg(msg);
+
+        return result;
+    }
 
 
     /**

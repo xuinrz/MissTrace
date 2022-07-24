@@ -37,7 +37,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             response.setStatus(401);
             ServletOutputStream outputStream = response.getOutputStream();
             response.setContentType("application/json;charset=utf-8");
-            outputStream.write("{\n\"code\": -2,\n\"msg\": \"token无效或过期，请重新登录\",\n\"data\": null,\n    \"token\": \"\"\n}".getBytes(StandardCharsets.UTF_8));
+            outputStream.write("{\n\"code\": 3001,\n\"msg\": \"token无效或过期，请重新登录\",\n\"data\": null,\n    \"token\": \"\"\n}".getBytes(StandardCharsets.UTF_8));
             return false;
         }
 
