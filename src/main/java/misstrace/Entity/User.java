@@ -17,11 +17,11 @@ public class User {
 //    因用户积分为0
     private Integer coin = 0;
     private Boolean isAdmin = false;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<MissPost> missPostList;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<MatchPost> matchPostList;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserProperty> userPropertyList;
     private String name;
     public synchronized void addCoin(){coin++;}//获得积分时调用

@@ -7,11 +7,12 @@ spring:
       max-request-size: 25MB
   datasource:
     name: sdumisstrace
-    url: jdbc:mysql://localhost:3306/sdumisstrace
+    url: jdbc:mysql://localhost:3306/sdumisstrace?characterEncoding=UTF-8&&useSSL=false&serverTimezone=GMT%2B8&useUnicode=true
     username: root
     password: hihihi
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update
 

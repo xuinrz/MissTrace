@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(	name = "misspost")
@@ -26,12 +27,23 @@ public class MissPost {
     //    是否被匹配成功？建立帖子时设为未匹配成功
     private Boolean isMatched = false;
     //    发帖位置
-    private Double longitude;//精度
+    private Double longitude;//经度
     private Double latitude ;//纬度
     //    发帖时间
     private String postTime;
     //    审核时间
     private String checkTime;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<MatchPost> matchPostList;
+
+
+    public List<MatchPost> getMatchPostList() {
+        return matchPostList;
+    }
+
+    public void setMatchPostList(List<MatchPost> matchPostList) {
+        this.matchPostList = matchPostList;
+    }
 
     public Integer getId() {
         return id;

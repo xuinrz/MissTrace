@@ -15,7 +15,7 @@ public class Goods {
 //    商品积分价值
     private Integer cost;
     private Boolean onSale = true;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserProperty> userProperties;
 
     public Integer getId() {

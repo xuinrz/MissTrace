@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Table(	name = "userproperty")
 public class UserProperty {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//id自增
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "uid")
