@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(	name = "userproperty")
-@Data
 public class UserProperty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//id自增
@@ -20,4 +19,35 @@ public class UserProperty {
 //    拥有数量
     private Integer number = 1;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 }
