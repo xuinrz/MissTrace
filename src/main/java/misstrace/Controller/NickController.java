@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/nick")
 public class NickController {
@@ -34,6 +35,7 @@ public class NickController {
         Map<String,Object> data = new HashMap<>();
         data.put("avatar",avatar);
         data.put("nickName",nickName);
+        data.put("name",user.getName());
         return Result.success(data,newtoken);
     }
     @PostMapping("/coin")

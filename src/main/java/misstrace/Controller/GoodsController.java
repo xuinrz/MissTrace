@@ -7,12 +7,13 @@ import misstrace.Service.UserPropertyService;
 import misstrace.Service.UserService;
 import misstrace.Util.JwtUtil;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/goods")
 public class GoodsController {
@@ -33,7 +34,7 @@ public class GoodsController {
         return Result.success(dataList,newToken);
     }
     @PostMapping("/add")
-    public Result addGoods(String description, String img, Integer cost,HttpServletRequest request) {
+    public Result addGoods(String description, MultipartFile img, Integer cost, HttpServletRequest request) {
         String token = request.getHeader("token");
         if(userService.getUserByToken(token).getIsAdmin()) {
             goodsService.createNewGoods(description,img,cost);

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -65,6 +66,7 @@ public class AuthController {
                 user.setId(userService.getNewId());
                 user.setSid(sid);
                 user.setName(sduLogin);
+                user.setIsAdmin(isAdmin);
                 userService.addUser(user);
             }
             //生成JWT字符串
