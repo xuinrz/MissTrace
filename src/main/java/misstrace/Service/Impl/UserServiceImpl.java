@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeAvatar(User user, MultipartFile avatar) {
-        if(user.getAvatar()!=null)ImgUtil.deleteImg(user.getAvatar());//存在旧头像则删除
         String avatarPath = ImgUtil.uploadAvatar(avatar);
+        if(avatarPath!=null&&user.getAvatar()!=null)ImgUtil.deleteImg(user.getAvatar());//存在旧头像则删除
         user.setAvatar(avatarPath);
         modifyUser(user);
     }
