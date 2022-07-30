@@ -97,7 +97,47 @@ public class MissServiceImlp implements MissService {
         missPost.setIsChecking(false);
         missPost.setIsPassed(false);
         missPost.setCheckTime(DataUtil.getTime());
-        if(missPost.getImg()!=null) ImgUtil.deleteImg(missPost.getImg());//不过审，直接删除图片
+//        if(missPost.getImg()!=null) ImgUtil.deleteImg(missPost.getImg());//不过审，直接删除图片
         missRepository.save(missPost);
+    }
+
+    @Override
+    public List showMyPostsByUserId(Integer userId) {
+        List<MissPost> postsList = missRepository.findPostByUserId(userId);
+        List dataList = new ArrayList();
+        MissPost post;
+        String status = "";
+        Map m;
+        Boolean isChecking,isPassed,isMatching,isMatched;
+        for (int i = 0; i < postsList.size(); i++) {
+            post = postsList.get(i);
+            m =new HashMap();
+            m.put("id", post.getId());
+            m.put("text", post.getText());
+            m.put("img", post.getImg());
+            m.put("postTime",post.getPostTime());
+            isChecking = post.getIsChecking();
+            isPassed = post.getIsPassed();
+            isMatching = post.getIsMatching();
+            isMatched = post.getIsMatched();
+            if (isChecking){
+                status = "待审核";
+            }else{
+                if (!isPassed){
+                    status = "未过审";
+                }else{
+                    if (!isMatching&&!isMatched){
+                        status = "已发布，待匹配";
+                    }else if(isMatching&&!isMatched){
+                        status = "有人正在匹配此帖，请等待审核结果";
+                    }else if(isMatching&&isMatched){
+                        status = "本帖已被成功匹配，获得1积分";
+                    }
+                }
+            }
+            m.put("status",status);
+            dataList.add(m);
+        }
+        return dataList;
     }
 }

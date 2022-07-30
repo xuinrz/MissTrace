@@ -77,7 +77,7 @@ public class MissPost {
         this.img = img;
     }
 
-    public Boolean getChecking() {
+    public Boolean getIsChecking() {
         return isChecking;
     }
 

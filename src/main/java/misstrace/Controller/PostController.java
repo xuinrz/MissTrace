@@ -111,6 +111,16 @@ public class PostController {
         list.put("postList",dataList);
         return Result.success(list, JwtUtil.refreshToken(token));
     }
+    @PostMapping("/mymiss")
+    public Result showMyMiss(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        Map<String, Object> info = JwtUtil.getInfo(token);
+        User user = userService.findUserBySid((String) info.get("sid")).get();
+        List dataList = missService.showMyPostsByUserId(user.getId());
+        Map list = new HashMap<>();
+        list.put("postList",dataList);
+        return Result.success(list, JwtUtil.refreshToken(token));
+    }
 
 }
 

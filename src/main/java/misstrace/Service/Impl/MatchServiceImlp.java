@@ -10,6 +10,7 @@ import misstrace.Service.MissService;
 import misstrace.Service.UserService;
 import misstrace.Util.DataUtil;
 import misstrace.Util.ImgUtil;
+import misstrace.Util.LocationUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,16 +47,17 @@ public class MatchServiceImlp implements MatchService {
         List<MatchPost> postsList = matchRepository.findCheckingPost();
         List dataList = new ArrayList();
         MatchPost post;
+        MissPost miss;
         Map m;
         for (int i = 0; i < postsList.size(); i++) {
             post = postsList.get(i);
+            miss = post.getMissPost();
             m =new HashMap();
             m.put("id", post.getId());
             m.put("img", post.getImg());
             m.put("missImg",post.getMissPost().getImg());
-            m.put("avatar", post.getUser().getAvatar());
-            m.put("nickName", post.getUser().getNickName());
-            m.put("sid", post.getUser().getSid());
+            Double distance = LocationUtil.getDistance(miss.getLatitude(),miss.getLongitude(),post.getLatitude(),post.getLongitude());
+            m.put("distance",distance);
             m.put("postTime",post.getPostTime());
             dataList.add(m);
         }
@@ -71,8 +73,8 @@ public class MatchServiceImlp implements MatchService {
         MissPost missPost = matchPost.getMissPost();
         missPost.setIsMatched(true);
         missPost.setCheckTime(DataUtil.getTime());
-//        匹配成功，迷踪帖和匹配帖的图片都删除
-        if(missPost.getImg()!=null) ImgUtil.deleteImg(missPost.getImg());
+//        匹配成功，匹配帖的图片删除
+//        if(missPost.getImg()!=null) ImgUtil.deleteImg(missPost.getImg());
         if(matchPost.getImg()!=null) ImgUtil.deleteImg(matchPost.getImg());
         missService.updateMissPost(missPost);
         matchRepository.save(matchPost);

@@ -17,4 +17,5 @@ public interface MissService {
     List showCheckingMissPost();
     void passMissPostById(Integer missId);
     void refuseMissPostById(Integer missId);
+    List showMyPostsByUserId(Integer userId);
 }
