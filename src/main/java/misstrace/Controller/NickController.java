@@ -37,6 +37,7 @@ public class NickController {
         data.put("nickName",nickName);
         data.put("name",user.getName());
         data.put("sid",user.getSid());
+        data.put("isAdmin",user.getIsAdmin());
         return Result.success(data,newtoken);
     }
     @PostMapping("/coin")
