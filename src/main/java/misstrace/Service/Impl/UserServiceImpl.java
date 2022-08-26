@@ -110,6 +110,7 @@ public class UserServiceImpl implements UserService {
 //        System.out.println(dataList);
         dataList.sort(Comparator.comparing((HashMap a) -> DataUtil.parseString((String) a.get("checkTime"))));
 //        System.out.println(dataList);
+        Collections.reverse(dataList);
         return dataList;
     }
 
