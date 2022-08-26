@@ -107,6 +107,7 @@ public class MissServiceImlp implements MissService {
         List dataList = new ArrayList();
         MissPost post;
         String status = "";
+        Integer code = 0;
         Map m;
         Boolean isChecking,isPassed,isMatching,isMatched;
         for (int i = 0; i < postsList.size(); i++) {
@@ -122,20 +123,26 @@ public class MissServiceImlp implements MissService {
             isMatched = post.getIsMatched();
             if (isChecking){
                 status = "待审核";
+                code = 0;
             }else{
                 if (!isPassed){
                     status = "未过审";
+                    code = -1;
                 }else{
                     if (!isMatching&&!isMatched){
                         status = "已发布，待匹配";
+                        code = 1;
                     }else if(isMatching&&!isMatched){
                         status = "有人正在匹配此帖，请等待审核结果";
+                        code = 2;
                     }else if(isMatching&&isMatched){
                         status = "本帖已被成功匹配，获得1积分";
+                        code = 3;
                     }
                 }
             }
             m.put("status",status);
+            m.put("code",code);
             dataList.add(m);
         }
         return dataList;
