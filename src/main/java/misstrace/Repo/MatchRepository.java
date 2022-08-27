@@ -12,7 +12,7 @@ public interface MatchRepository extends JpaRepository<MatchPost, Integer> {
     @Query("SELECT max(id) FROM MatchPost ")
     Integer getMaxId();
 
-    @Query("FROM MatchPost WHERE isChecking=true ORDER BY postTime DESC ")
+    @Query("FROM MatchPost WHERE isChecking=true ORDER BY postTime ASC ")
     List<MatchPost> findCheckingPost();
 
     @Query("FROM MatchPost WHERE user.id=?1 AND isChecking=false ")
